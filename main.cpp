@@ -27,7 +27,7 @@ int main() {
 
     // Create a block
     string timestamp1 = "2024-01-10T12:00:00";
-    Block block1(public_key_str, "File Contents 1", timestamp1);
+    ArkBlock block1(public_key_str, "File Contents 1", timestamp1);
 
     // Sign the block
     block1.sign_block(private_key);

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Block::Block(const string &user_public_key, const string &file_contents, const string &timestamp) : 
+ArkBlock::ArkBlock(const string &user_public_key, const string &file_contents, const string &timestamp) : 
     user_public_key(user_public_key),
     file_contents(file_contents),
     timestamp(timestamp),
@@ -10,7 +10,7 @@ Block::Block(const string &user_public_key, const string &file_contents, const s
         this->hash();
 }
 
-void Block::hash() {
+void ArkBlock::hash() {
     string data = user_public_key + file_contents + timestamp;
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((const unsigned char *)data.c_str(), data.length(), hash);
@@ -22,7 +22,7 @@ void Block::hash() {
     signature = hash_hex;
 }
 
-void Block::sign_block(EVP_PKEY *private_key) {
+void ArkBlock::sign_block(EVP_PKEY *private_key) {
     string data = user_public_key + file_contents + timestamp;
     size_t signature_length;
     EVP_MD_CTX *ctx = EVP_MD_CTX_new();
@@ -44,7 +44,7 @@ void Block::sign_block(EVP_PKEY *private_key) {
     EVP_MD_CTX_free(ctx);
 }
 
-bool Block::verify_signature(EVP_PKEY *public_key) {
+bool ArkBlock::verify_signature(EVP_PKEY *public_key) {
     string data = user_public_key + file_contents + timestamp;
     vector<unsigned char> signature_buffer(signature.length() / 2);
     size_t signature_length = signature.length() / 2;
@@ -64,7 +64,7 @@ bool Block::verify_signature(EVP_PKEY *public_key) {
 }
 
 // Getter methods for demonstration purposes
-string Block::get_signature() const {
+string ArkBlock::get_signature() const {
     return signature;
 }
 
