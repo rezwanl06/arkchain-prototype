@@ -8,7 +8,6 @@
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 
-
 class ArkBlock {
     private:
         std::string user_public_key;
@@ -22,6 +21,7 @@ class ArkBlock {
         void sign_block(EVP_PKEY *private_key);
         bool verify_signature(EVP_PKEY *public_key);
         std::string get_signature() const;
+        bool operator==(const ArkBlock &other) const;
 };
 
 std::pair<std::string, std::string> generate_key_pair();

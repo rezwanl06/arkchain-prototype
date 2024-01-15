@@ -28,9 +28,11 @@ int main() {
     // Create a block
     string timestamp1 = "2024-01-10T12:00:00";
     ArkBlock block1(public_key_str, "File Contents 1", timestamp1);
+    ArkBlock block2(public_key_str, "File Contents 1", timestamp1);
 
     // Sign the block
     block1.sign_block(private_key);
+    block2.sign_block(private_key);
 
     // Verify the signature
     bool is_signature_valid = block1.verify_signature(public_key);
@@ -39,6 +41,12 @@ int main() {
     std::cout << "Block 1:" << std::endl;
     std::cout << "Signature: " << block1.get_signature() << std::endl;
     std::cout << "Signature Valid: " << (is_signature_valid ? "Yes" : "No") << std::endl;
+
+    if (block1 == block2) {
+        std::cout << "Blocks are equal" << std::endl;
+    } else {
+        std::cout << "Blocks are not equal" << std::endl;
+    }
 
     // Cleanup
     EVP_PKEY_free(private_key);

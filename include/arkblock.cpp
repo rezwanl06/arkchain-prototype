@@ -63,6 +63,10 @@ bool ArkBlock::verify_signature(EVP_PKEY *public_key) {
     return (success == 1);
 }
 
+bool ArkBlock::operator==(const ArkBlock &other) const {
+    return this -> signature == other.signature;
+}
+
 // Getter methods for demonstration purposes
 string ArkBlock::get_signature() const {
     return signature;
