@@ -67,9 +67,25 @@ bool ArkBlock::operator==(const ArkBlock &other) const {
     return this -> signature == other.signature;
 }
 
+bool ArkBlock::operator<(const ArkBlock &other) const {
+    return this -> signature < other.signature;
+}
+
 // Getter methods for demonstration purposes
 string ArkBlock::get_signature() const {
     return signature;
+}
+
+string ArkBlock::get_user_public_key() const {
+    return user_public_key;
+}
+
+string ArkBlock::get_file_contents() const {
+    return file_contents;
+}
+
+string ArkBlock::get_timestamp() const {
+    return timestamp;
 }
 
 // Function to generate RSA key pair and return as strings
