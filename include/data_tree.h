@@ -3,15 +3,16 @@
 
 #include "arkblock.h"
 
-struct TreeNode {
-    ArkBlock block;
-    std::string hash;
-    TreeNode *left;
-    TreeNode *right;
+class TreeNode {
+    public:
+        ArkBlock block;
+        std::string hash;
+        TreeNode *left;
+        TreeNode *right;
 
-    TreeNode(ArkBlock block);
+        TreeNode(const ArkBlock &block);
 
-    void calculate_hash();
+        void calculate_hash();
 };
 
 class DataTree {
@@ -23,6 +24,7 @@ class DataTree {
         void add_entry(const ArkBlock &block);
         void display_tree() const;
         void traverse_tree(TreeNode *node) const;
+        TreeNode* construct_balanced_tree(const std::vector<TreeNode*>& nodes, int start, int end);
 };
 
 
