@@ -5,6 +5,7 @@
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 #include "include/arkblock.h"
+#include "include/data_tree.h"
 
 using namespace std;
 
@@ -46,6 +47,17 @@ int main() {
         std::cout << "Blocks are equal" << std::endl;
     } else {
         std::cout << "Blocks are not equal" << std::endl;
+    }
+
+    DataTree myTree;
+
+    myTree.add_entry(block1);
+    myTree.traverse_tree(myTree.get_root());
+
+    if (myTree.verify_arkblock(block2)) {
+        std::cout << "Block found!" << std::endl;
+    } else {
+        std::cout << "Block not found!" << std::endl;
     }
 
     // Cleanup

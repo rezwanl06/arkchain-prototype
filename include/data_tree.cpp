@@ -10,6 +10,10 @@ TreeNode::TreeNode(const ArkBlock& block) : block(block), hash(""), left(nullptr
     calculate_hash();
 }
 
+TreeNode* DataTree::get_root() const {
+    return this -> root;
+}
+
 void TreeNode::calculate_hash() {
     std::string combinedData = block.get_user_public_key() + block.get_file_contents() + block.get_timestamp() + hash;
     unsigned char hashedData[SHA256_DIGEST_LENGTH];
@@ -69,7 +73,7 @@ void DataTree::traverse_tree(TreeNode* node) const {
     }
 }
 
-bool DataTree::verify_arkblock(const ArkBlock& block, TreeNode* node) const {
+bool DataTree::verify_arkblock(const ArkBlock& block) const {
     std::stack<TreeNode*> nodeStack;
 
     // Start with the root node
