@@ -26,6 +26,7 @@ class ArkBlock {
         std::string get_file_contents() const;
         bool operator==(const ArkBlock &other) const;
         bool operator<(const ArkBlock &other) const;
+        bool operator>(const ArkBlock &other) const;
 
 };
 

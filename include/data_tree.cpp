@@ -6,46 +6,106 @@
 #include <iostream>
 #include <openssl/sha.h>
 
-TreeNode::TreeNode(const ArkBlock& block) : block(block), hash(""), left(nullptr), right(nullptr) {
-    calculate_hash();
-}
+TreeNode::TreeNode(const ArkBlock& block) : block(block), left(nullptr), right(nullptr) {}
 
 TreeNode* DataTree::get_root() const {
     return this -> root;
 }
 
-void TreeNode::calculate_hash() {
-    std::string combinedData = block.get_user_public_key() + block.get_file_contents() + block.get_timestamp() + hash;
-    unsigned char hashedData[SHA256_DIGEST_LENGTH];
-    SHA256((const unsigned char*)combinedData.c_str(), combinedData.length(), hashedData);
+DataTree::DataTree() : root(nullptr) {}
 
-    char hashedDataHex[SHA256_DIGEST_LENGTH * 2 + 1];
-    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        snprintf(&hashedDataHex[i * 2], 3, "%02x", hashedData[i]);
-    }
-    hash = hashedDataHex;
+int DataTree::height(TreeNode* node) {
+    return (node == nullptr) ? 0 : node->height;
 }
 
-DataTree::DataTree() {
-    this -> root = nullptr;
+int DataTree::balance_factor(TreeNode* node) {
+    return (node == nullptr) ? 0 : height(node->left) - height(node->right);
+}
+
+TreeNode* DataTree::rotate_left(TreeNode* y) {
+    TreeNode* x = y->right;
+    TreeNode* T2 = x->left;
+
+    // Perform rotation
+    x->left = y;
+    y->right = T2;
+
+    // Update heights
+    y->height = std::max(height(y->left), height(y->right)) + 1;
+    x->height = std::max(height(x->left), height(x->right)) + 1;
+
+    return x;
+}
+
+TreeNode* DataTree::rotate_right(TreeNode* x) {
+    TreeNode* y = x->left;
+    TreeNode* T2 = y->right;
+
+    // Perform rotation
+    y->right = x;
+    x->left = T2;
+
+    // Update heights
+    x->height = std::max(height(x->left), height(x->right)) + 1;
+    y->height = std::max(height(y->left), height(y->right)) + 1;
+
+    return y;
+}
+
+TreeNode* DataTree::insert(TreeNode* node, const ArkBlock& newBlock) {
+    // Standard BST insertion
+    if (node == nullptr) {
+        return new TreeNode(newBlock);
+    }
+
+    if (newBlock < node->block) {
+        node->left = insert(node->left, newBlock);
+    } else if (newBlock > node->block) {
+        node->right = insert(node->right, newBlock);
+    } else {
+        // Duplicate blocks are not allowed
+        return node;
+    }
+
+    // Update height of the current node
+    node->height = 1 + std::max(height(node->left), height(node->right));
+
+    // Get the balance factor to check whether this node became unbalanced
+    int balance = balance_factor(node);
+
+    // Left Heavy (LL)
+    if (balance > 1 && newBlock < node->left->block) {
+        return rotate_right(node);
+    }
+
+    // Right Heavy (RR)
+    if (balance < -1 && newBlock > node->right->block) {
+        return rotate_left(node);
+    }
+
+    // Left-Right Heavy (LR)
+    if (balance > 1 && newBlock > node->left->block) {
+        node->left = rotate_left(node->left);
+        return rotate_right(node);
+    }
+
+    // Right-Left Heavy (RL)
+    if (balance < -1 && newBlock < node->right->block) {
+        node->right = rotate_right(node->right);
+        return rotate_left(node);
+    }
+
+    return node;
 }
 
 void DataTree::add_entry(const ArkBlock& newBlock) {
-    TreeNode* newNode = new TreeNode(newBlock);
-
-    if (root == nullptr) {
-        root = newNode;
-    } else {
-        std::vector<TreeNode*> nodesToMerge = {root, newNode};
-        root = construct_balanced_tree(nodesToMerge, 0, 1);
-    }
+    root = insert(root, newBlock);
 }
 
 TreeNode* DataTree::merge_nodes(TreeNode* node1, TreeNode* node2) {
     TreeNode* parent = new TreeNode(ArkBlock("", "", "")); // Placeholder, not used in hashing
     parent->left = node1;
     parent->right = node2;
-    parent->calculate_hash();
     return parent;
 }
 
@@ -68,7 +128,7 @@ void DataTree::display_tree() const {
 void DataTree::traverse_tree(TreeNode* node) const {
     if (node) {
         traverse_tree(node->left);
-        std::cout << "Hash: " << node->hash << std::endl;
+        std::cout << "Hash: " << node->block.get_signature() << std::endl;
         traverse_tree(node->right);
     }
 }
@@ -100,9 +160,5 @@ bool DataTree::verify_arkblock(const ArkBlock& block) const {
     }
 
     // Block not found
-    return false;
-}
-
-bool DataTree::validate_arkblock(const ArkBlock& block) const {
     return false;
 }

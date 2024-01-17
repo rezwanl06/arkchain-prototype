@@ -87,6 +87,10 @@ bool ArkBlock::operator<(const ArkBlock &other) const {
     return this -> signature < other.signature;
 }
 
+bool ArkBlock::operator>(const ArkBlock &other) const {
+    return this -> signature > other.signature;
+}
+
 // Getter methods for demonstration purposes
 string ArkBlock::get_signature() const {
     return signature;
