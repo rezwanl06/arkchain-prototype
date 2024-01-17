@@ -64,23 +64,7 @@ bool ArkBlock::verify_signature(EVP_PKEY *public_key) const {
 }
 
 bool ArkBlock::operator==(const ArkBlock &other) const {
-    BIO *this_public_key_bio = BIO_new(BIO_s_mem());
-    BIO_puts(this_public_key_bio, this -> user_public_key.c_str());
-    EVP_PKEY *this_public_key = PEM_read_bio_PUBKEY(this_public_key_bio, nullptr, nullptr, nullptr);
-    BIO_free(this_public_key_bio);
-
-    BIO *other_public_key_bio = BIO_new(BIO_s_mem());
-    BIO_puts(other_public_key_bio, (other.get_user_public_key()).c_str());
-    EVP_PKEY *other_public_key = PEM_read_bio_PUBKEY(other_public_key_bio, nullptr, nullptr, nullptr);
-    BIO_free(other_public_key_bio);
-
-    bool result = (other.verify_signature(this_public_key)) && (this -> verify_signature(other_public_key));
-    
-    // Cleanup
-    EVP_PKEY_free(this_public_key);
-    EVP_PKEY_free(other_public_key);
-
-    return result;
+    return this -> file_contents == other.get_file_contents();
 }
 
 bool ArkBlock::operator<(const ArkBlock &other) const {

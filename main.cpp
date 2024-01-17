@@ -30,10 +30,12 @@ int main() {
     string timestamp1 = "2024-01-10T12:00:00";
     ArkBlock block1(public_key_str, "File Contents 1", timestamp1);
     ArkBlock block2(public_key_str, "File Contents 1", timestamp1);
+    ArkBlock block3(public_key_str, "File Contents 1", timestamp1);
 
     // Sign the block
     block1.sign_block(private_key);
     block2.sign_block(private_key);
+    block3.sign_block(private_key);
 
     // Verify the signature
     bool is_signature_valid = block1.verify_signature(public_key);
@@ -54,7 +56,7 @@ int main() {
     myTree.add_entry(block1);
     myTree.traverse_tree(myTree.get_root());
 
-    if (myTree.verify_arkblock(block2)) {
+    if (myTree.verify_arkblock(block3)) {
         std::cout << "Block found!" << std::endl;
     } else {
         std::cout << "Block not found!" << std::endl;

@@ -99,6 +99,7 @@ TreeNode* DataTree::insert(TreeNode* node, const ArkBlock& newBlock) {
 }
 
 void DataTree::add_entry(const ArkBlock& newBlock) {
+    std::lock_guard<std::mutex> lock(tree_mutex);
     root = insert(root, newBlock);
 }
 

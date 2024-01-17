@@ -16,6 +16,7 @@ class TreeNode {
 class DataTree {
     private:
         TreeNode* root;
+        std::mutex tree_mutex;
 
         TreeNode* insert(TreeNode* node, const ArkBlock& newBlock);
         TreeNode* merge_nodes(TreeNode* node1, TreeNode* node2);
