@@ -44,7 +44,7 @@ void ArkBlock::sign_block(EVP_PKEY *private_key) {
     EVP_MD_CTX_free(ctx);
 }
 
-bool ArkBlock::verify_signature(EVP_PKEY *public_key) {
+bool ArkBlock::verify_signature(EVP_PKEY *public_key) const {
     string data = user_public_key + file_contents + timestamp;
     vector<unsigned char> signature_buffer(signature.length() / 2);
     size_t signature_length = signature.length() / 2;
@@ -64,7 +64,23 @@ bool ArkBlock::verify_signature(EVP_PKEY *public_key) {
 }
 
 bool ArkBlock::operator==(const ArkBlock &other) const {
-    return this -> signature == other.signature;
+    BIO *this_public_key_bio = BIO_new(BIO_s_mem());
+    BIO_puts(this_public_key_bio, this -> user_public_key.c_str());
+    EVP_PKEY *this_public_key = PEM_read_bio_PUBKEY(this_public_key_bio, nullptr, nullptr, nullptr);
+    BIO_free(this_public_key_bio);
+
+    BIO *other_public_key_bio = BIO_new(BIO_s_mem());
+    BIO_puts(other_public_key_bio, (other.get_user_public_key()).c_str());
+    EVP_PKEY *other_public_key = PEM_read_bio_PUBKEY(other_public_key_bio, nullptr, nullptr, nullptr);
+    BIO_free(other_public_key_bio);
+
+    bool result = (other.verify_signature(this_public_key)) && (this -> verify_signature(other_public_key));
+    
+    // Cleanup
+    EVP_PKEY_free(this_public_key);
+    EVP_PKEY_free(other_public_key);
+
+    return result;
 }
 
 bool ArkBlock::operator<(const ArkBlock &other) const {

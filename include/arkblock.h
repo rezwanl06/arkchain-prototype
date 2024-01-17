@@ -19,7 +19,7 @@ class ArkBlock {
         ArkBlock(const std::string &user_public_key, const std::string &file_contents, const std::string &timestamp);
         void hash();
         void sign_block(EVP_PKEY *private_key);
-        bool verify_signature(EVP_PKEY *public_key);
+        bool verify_signature(EVP_PKEY *public_key) const;
         std::string get_signature() const;
         std::string get_timestamp() const;
         std::string get_user_public_key() const;

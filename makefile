@@ -3,9 +3,9 @@ CFLAGS = -std=c++11 -Wall -Wpedantic
 OPENSSL_INCLUDE = -I/opt/homebrew/include
 OPENSSL_LIB = -L/opt/homebrew/lib -lssl -lcrypto
 
-SRCS = include/arkblock.cpp main.cpp
+SRCS = include/arkblock.cpp include/data_tree.cpp main.cpp
 OBJS = $(SRCS:.cpp=.o)
-EXEC = main
+EXEC = main.out
 
 all: $(EXEC)
 

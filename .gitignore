@@ -1,2 +1,5 @@
 .vscode/
 .DS_Store
+*.o
+include/*.o
+main.out

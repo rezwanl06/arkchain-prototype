@@ -2,6 +2,7 @@
 #include "arkblock.h"
 #include <string>
 #include<vector>
+#include<stack>
 #include <iostream>
 #include <openssl/sha.h>
 
@@ -66,4 +67,38 @@ void DataTree::traverse_tree(TreeNode* node) const {
         std::cout << "Hash: " << node->hash << std::endl;
         traverse_tree(node->right);
     }
+}
+
+bool DataTree::verify_arkblock(const ArkBlock& block, TreeNode* node) const {
+    std::stack<TreeNode*> nodeStack;
+
+    // Start with the root node
+    nodeStack.push(root);
+
+    while (!nodeStack.empty()) {
+        TreeNode* current = nodeStack.top();
+        nodeStack.pop();
+
+        // Check if the current node's block is equal to the provided block
+        if (current->block == block) {
+            return true;
+        }
+
+        // Push the right child first, so it's processed next
+        if (current->right != nullptr) {
+            nodeStack.push(current->right);
+        }
+
+        // Push the left child, so it's processed after the right child
+        if (current->left != nullptr) {
+            nodeStack.push(current->left);
+        }
+    }
+
+    // Block not found
+    return false;
+}
+
+bool DataTree::validate_arkblock(const ArkBlock& block) const {
+    return false;
 }

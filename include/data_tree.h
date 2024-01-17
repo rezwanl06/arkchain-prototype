@@ -25,6 +25,8 @@ class DataTree {
         void display_tree() const;
         void traverse_tree(TreeNode *node) const;
         TreeNode* construct_balanced_tree(const std::vector<TreeNode*>& nodes, int start, int end);
+        bool verify_arkblock(const ArkBlock &block, TreeNode *node) const;
+        bool validate_arkblock(const ArkBlock &block) const;
 };
 
 
