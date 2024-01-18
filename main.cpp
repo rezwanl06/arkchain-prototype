@@ -4,8 +4,10 @@
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 #include <openssl/evp.h>
-#include "include/arkblock.h"
-#include "include/data_tree.h"
+
+#include "include/data_structures/arkblock.h"
+#include "include/data_structures/data_tree.h"
+#include "include/user/user.h"
 
 using namespace std;
 
@@ -61,6 +63,12 @@ int main() {
     } else {
         std::cout << "Block not found!" << std::endl;
     }
+
+    User* user1 = new User("User1", public_key_str, private_key_str, 5001);
+    user1 -> create_arkblock(public_key_str, "File Contents 1", timestamp1);
+    //user1 -> print_data_tree();
+
+    delete user1;
 
     // Cleanup
     EVP_PKEY_free(private_key);

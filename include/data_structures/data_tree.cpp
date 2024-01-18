@@ -163,3 +163,33 @@ bool DataTree::verify_arkblock(const ArkBlock& block) const {
     // Block not found
     return false;
 }
+
+DataTree::~DataTree() {
+    this -> clear_tree();
+}
+
+void DataTree::clear_tree() {
+    if (!root) {
+            return;
+        }
+
+        std::stack<TreeNode*> nodeStack;
+        TreeNode* current = root;
+
+        while (current || !nodeStack.empty()) {
+            while (current) {
+                nodeStack.push(current);
+                current = current->left;
+            }
+
+            current = nodeStack.top();
+            nodeStack.pop();
+
+            TreeNode* temp = current->right;
+            delete current;
+
+            current = temp;
+        }
+
+        root = nullptr;
+}

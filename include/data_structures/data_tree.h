@@ -33,6 +33,8 @@ class DataTree {
         void traverse_tree(TreeNode* node) const;
         TreeNode* construct_balanced_tree(const std::vector<TreeNode*>& nodes, int start, int end);
         bool verify_arkblock(const ArkBlock& block) const;
+        ~DataTree();
+        void clear_tree();
 };
 
 
