@@ -27,7 +27,7 @@ class ArkBlock {
         bool operator==(const ArkBlock &other) const;
         bool operator<(const ArkBlock &other) const;
         bool operator>(const ArkBlock &other) const;
-
+        ~ArkBlock();
 };
 
 std::pair<std::string, std::string> generate_key_pair();

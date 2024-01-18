@@ -92,6 +92,10 @@ string ArkBlock::get_timestamp() const {
     return timestamp;
 }
 
+ArkBlock::~ArkBlock() {
+    
+}
+
 // Function to generate RSA key pair and return as strings
 pair<string, string> generate_key_pair() {
     EVP_PKEY *pkey = EVP_PKEY_new();

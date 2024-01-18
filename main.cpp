@@ -34,6 +34,10 @@ int main() {
     ArkBlock block2(public_key_str, "File Contents 1", timestamp1);
     ArkBlock block3(public_key_str, "File Contents 1", timestamp1);
 
+    ArkBlock* block4 = new ArkBlock(public_key_str, "File Contents 1", timestamp1);
+    block4 -> sign_block(private_key);
+    delete block4;
+
     // Sign the block
     block1.sign_block(private_key);
     block2.sign_block(private_key);
@@ -65,8 +69,8 @@ int main() {
     }
 
     User* user1 = new User("User1", public_key_str, private_key_str, 5001);
-    user1 -> create_arkblock(public_key_str, "File Contents 1", timestamp1);
-    //user1 -> print_data_tree();
+    user1 -> create_arkblock("File Contents 1", timestamp1);
+    user1 -> print_data_tree();
 
     delete user1;
 

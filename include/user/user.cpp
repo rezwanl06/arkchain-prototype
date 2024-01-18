@@ -13,20 +13,17 @@ User::User(string username, string public_key, string private_key, int port) :
         this -> data_tree = new DataTree();
 }
 
-void User::create_arkblock(string user_public_key, string file_contents, string timestamp) {
-    ArkBlock *new_block = new ArkBlock(user_public_key, file_contents, timestamp);
-
-    if (new_block == nullptr) {
-        cout << "Failed to create block" << endl;
-        return;
-    }
+void User::create_arkblock(string file_contents, string timestamp) {
+    ArkBlock *new_block = new ArkBlock(public_key, file_contents, timestamp);
 
     BIO *private_key_bio = BIO_new(BIO_s_mem());
     BIO_puts(private_key_bio, private_key.c_str());
-    EVP_PKEY *user_private_key = PEM_read_bio_PUBKEY(private_key_bio, nullptr, nullptr, nullptr);
+    EVP_PKEY *user_private_key = PEM_read_bio_PrivateKey(private_key_bio, nullptr, nullptr, nullptr);
     BIO_free(private_key_bio);
 
-    new_block -> sign_block(user_private_key);
+    cout << "private key:" << private_key << endl;
+
+    new_block -> sign_block(user_private_key);  // Seg fault here
 
     EVP_PKEY_free(user_private_key);
 
