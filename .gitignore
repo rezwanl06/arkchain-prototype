@@ -3,3 +3,4 @@
 *.o
 include/*.o
 main.out
+keygen.cpp

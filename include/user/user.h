@@ -19,6 +19,7 @@ class User {
         void request_arkblock(std::string file_contents);
         void add_block_to_data_tree(const ArkBlock &block);
         void print_data_tree();
+        bool verify_arkblock(const ArkBlock &block);
 };
 
 

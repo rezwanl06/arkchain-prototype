@@ -1,10 +1,11 @@
 #include<iostream>
-#include "user.h"
 #include <openssl/sha.h>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 #include <openssl/evp.h>
+
+#include "user.h"
 
 using namespace std;
 
@@ -21,9 +22,7 @@ void User::create_arkblock(string file_contents, string timestamp) {
     EVP_PKEY *user_private_key = PEM_read_bio_PrivateKey(private_key_bio, nullptr, nullptr, nullptr);
     BIO_free(private_key_bio);
 
-    cout << "private key:" << private_key << endl;
-
-    new_block -> sign_block(user_private_key);  // Seg fault here
+    new_block -> sign_block(user_private_key);
 
     EVP_PKEY_free(user_private_key);
 
@@ -40,4 +39,8 @@ void User::request_arkblock(string file_contents) {
 
 void User::print_data_tree() {
     data_tree -> display_tree();
+}
+
+bool User::verify_arkblock(const ArkBlock &block) {
+    return this -> data_tree -> verify_arkblock(block);
 }

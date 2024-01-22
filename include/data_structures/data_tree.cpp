@@ -1,10 +1,11 @@
-#include "data_tree.h"
-#include "arkblock.h"
 #include <string>
 #include<vector>
 #include<stack>
 #include <iostream>
 #include <openssl/sha.h>
+
+#include "data_tree.h"
+#include "arkblock.h"
 
 TreeNode::TreeNode(const ArkBlock& block) : block(block), left(nullptr), right(nullptr) {}
 

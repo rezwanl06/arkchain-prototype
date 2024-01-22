@@ -1,12 +1,12 @@
 CC = g++
-CFLAGS = -std=c++11 -Wall -Wpedantic -Wvla 
+CFLAGS = -std=c++14 -Wall -Wpedantic -Wvla 
 OPENSSL_INCLUDE = -I/opt/homebrew/include
 OPENSSL_LIB = -L/opt/homebrew/lib -lssl -lcrypto
 
 SRC_DIRS = include
-SRCS = $(wildcard $(SRC_DIRS)/*/*.cpp) main.cpp
+SRCS = $(wildcard $(SRC_DIRS)/*/*.cpp) node.cpp
 OBJS = $(SRCS:.cpp=.o)
-EXEC = main.out
+EXEC = node.out
 
 all: $(EXEC)
 
