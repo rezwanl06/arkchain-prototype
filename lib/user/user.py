@@ -15,6 +15,7 @@ class User:
         self.private_key = private_key
         self.port = port
         self.data_tree = DataTree()
+        self.peers = []
 
     def create_arkblock(self, file_contents, timestamp):
         new_block = ArkBlock(self.public_key, file_contents, timestamp)

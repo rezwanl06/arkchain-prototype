@@ -1,2 +1,6 @@
 .vscode/
 .DS_Store
+keys/
+lib/__pycache__/
+lib/data_structures/__pycache__/
+lib/user/__pycache__/
